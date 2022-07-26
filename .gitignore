@@ -1,0 +1,6 @@
+*-checkpoint
+.ipynb_checkpoints/
+.venv/
+.spyproject
+databases/microeconometricas/banco_central/
+.idea/

@@ -1,0 +1,28 @@
+{
+   "endpoint-sandbox":"https://api-sandbox.paygo.com.br",
+   "endpoint-prd":"https://api.paygo.com.br",
+   "login":{
+      "url":"/auth/reconciliation/token",
+      "metodo":"post"
+   },
+   "consulta_data":{
+      "url":"/reconciliation/c6pay/edi/v2/merchants/{merchant}/date/{date}?page={page}",
+      "metodo":"get"
+   },
+   "consulta_diaria":{
+      "url":"/reconciliation/c6pay/edi/v2/merchants/merchant",
+      "metodo":"get"
+   },
+   "consulta_autorizacao":{
+      "url":"/reconciliation/c6pay/relationship/v1/authorizations/conciliators/merchants/{merchant}",
+      "metodo":"get"
+   },
+   "solicitacao_autorizacao":{
+      "url":"/reconciliation/c6pay/relationship/v1/authorizations/conciliators",
+      "metodo":"post"
+   },
+   "estabelecimentos":{
+      "url":"/reconciliation/c6pay/relationship/v1/authorizations/conciliators/merchants",
+      "metodo":"get"
+   }
+}
