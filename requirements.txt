@@ -1,18 +1,15 @@
 pandas==1.4.2
 ipeadatapy==0.1.7
 requests==2.27.1
-scikit-learn=1.1.1
-jupyter notebook
+scikit-learn==1.1.1
 jupyterlab~=3.3.2
 defusedxml~=0.7.1
 cffi~=1.15.0
 ipython~=8.4.0
-zlib~=1.2.12
 beautifulsoup4~=4.11.1
 soupsieve~=2.3.1
 pip~=22.1.2
 wheel~=0.37.1
-openssl~=1.1.1q
 cryptography~=37.0.1
 tornado~=6.1
 typing_extensions~=4.1.1
@@ -64,12 +61,10 @@ idna~=3.3
 urllib3~=1.26.9
 asttokens~=2.0.5
 executing~=0.8.3
-freetype~=2.11.0
 ipykernel~=6.9.1
 jupyter_server~=1.17.1
 pandocfilters~=1.5.0
 mistune~=0.8.4
-python~=3.10.4
 entrypoints~=0.4
 jupyterlab_pygments~=0.1.2
 pyparsing~=3.0.4
@@ -77,11 +72,9 @@ pure_eval~=0.2.2
 pycparser~=2.21
 qtconsole~=5.3.1
 websocket-client~=0.58.0
-readline~=8.1.2
 ipywidgets~=7.6.5
 pyrsistent~=0.18.0
 jupyterlab_server~=2.12.0
 nbclassic~=0.3.5
 jupyter_console~=6.4.3
 json5~=0.9.6
-scikit-learn~=1.1.1

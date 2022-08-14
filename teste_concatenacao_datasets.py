@@ -80,22 +80,8 @@ df_micro_2020_01.drop(labels='data_base', axis=1, inplace=True)
 df_micro_2020_01 = pd.concat(
     (df_micro_2020_01[df_micro_2020_01.columns[-3:]], df_micro_2020_01[df_micro_2020_01.columns[:-3]]), axis=1)
 
-def dummizar_y_binario(dataframe: DataFrame, coluna) -> DataFrame:
-    """TODO: expandir a dummizaç�o para v�rias colunas.
-        - pode ser uma lista, tupla ou set de colunas"""
-    dataframe[coluna] = dataframe[coluna].str.replace(',', '.').astype(float)  # pd.to_numeric(dataframe[coluna])
-    nova_coluna = f'{coluna}_dummizado'
-    if len(dataframe[coluna].unique()) > 2:
-        dataframe[nova_coluna] = dataframe[coluna]
-        dataframe[nova_coluna][dataframe[nova_coluna] > 0] = 1
-        dataframe[nova_coluna][dataframe[nova_coluna] == 0] = 0
-        dataframe.drop(coluna, axis=1, inplace=True)
-    return pd.get_dummies(dataframe, columns=[nova_coluna], drop_first=True)
-
-
 df_2020 = pd.merge(left=df_micro_2020_01, right=df_macros, left_on=lista_colunas_base, right_on=lista_colunas_base)
 
 
-df_2020_y_dummy = dummizar_y_binario(df_2020, 'vencido_acima_de_15_dias')
-df_2020_y_dummy.to_csv('df_2020_y_dummy.csv', sep=';', index=False)
+df_2020.to_csv('df_2020.csv', sep=';', index=False)
 print('trap')
