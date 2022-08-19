@@ -21,7 +21,8 @@ escolheremos todas as observações.
    2. Exemplo: 
       - Temos datasets dos anos 2012, 2013 e 2014, cada um com 200 000 linhas;
       - Queremos datasets menores, misturados, que não ultrapassem 50 000 observações, valor escolhido como parâmetro;
-      - Assim, cada conjunto terá 50 000 / (3 * 12), os primeiros dois anos terão 1388 e o último terá 16 668 observações para o primeiro macroconjunto;
+      - Assim, cada conjunto terá 50 000 / (3* 12), os primeiros dois anos terão 16 666 e o último terá 16 668 observações para o primeiro macroconjunto;
+        - cada mês de cada ano terá o mesmo número de observações, se possível. No exemplo acima, nos dois primeiros anos, cada mês contribuirá com 16 666 / 12 observações =~ 1 388
         - **Ponto de melhoria**: podemos permutar entre as quantidades diferentes entre os anos sempre que a divisão não for igual
       - O segundo macroconjunto será formado da mesma forma, porém escolhendo índices diferentes, mas randomicamente, dos que foram atribuídos no conjunto anterior
 ### Leitura dos Datasets
