@@ -9,28 +9,41 @@ def contar_linhas_arquivo(arquivo: str) -> int:
     with open(arquivo) as io_arquivo:
         return sum(1 for line in io_arquivo) - 1
 
+
 def nomear_arquivo(arquivo: str) -> str:
     return os.path.basename(arquivo)
 
 
-ano = 2020
-lista_2020_planilhas = (glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilha_2020??.csv')))
-total_registros = 0
-dict_arquivo_registros = {}
+TAMANHO_MAXIMO_DATAFRAME = 50000
 
-for planilha in lista_2020_planilhas:
-    dict_arquivo_registros[nomear_arquivo(planilha)] = contar_linhas_arquivo()
+ano = 2020
+SEMENTE_PRIMARIA = 0
+total_registros = 0
+
+lista_2020_datasets_primarios = (glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilha_2020??.csv')))
+quantidade_datasets_primarios = len(lista_2020_datasets_primarios)
+np.random.seed(SEMENTE_PRIMARIA)
+array_sementes_secundarias = np.random.randint(0, 256, size=quantidade_datasets_primarios, dtype=np.uint8)
+dict_arquivo_registros = {}
+for planilha in lista_2020_datasets_primarios:
+    dict_arquivo_registros[nomear_arquivo(planilha)] = contar_linhas_arquivo(planilha)
     total_registros += dict_arquivo_registros[nomear_arquivo(planilha)]
 
-    print(f'Total do arquivo {os.path.basename(planilha)}: {contar_linhas_arquivo(planilha)}')
-    print(total_registros)
-"""criar algo como namedtuple para cada arquivo com
- número de total de linhas
- e aplicar o método de comparação
- é imprescindível embaralhar os índices e preserválos para sua posterior recuperação
+total_datasets = int(total_registros // TAMANHO_MAXIMO_DATAFRAME)
 
-array = np.arange(1, tamanho+1, dtype=np.uint16)
-seed = 0
-np.random.shuffle()
-loop e np.random.choice(array), não esquecer de atualizar a seed
+dict_arrays_indices = {}
+for (nome_planilha, total_registros_planilha), semente_secundaria in zip(
+        dict_arquivo_registros.items(), array_sementes_secundarias):
+    np.random.seed(semente_secundaria)
+    lista_arrays_indices = np.array_split(np.random.permutation(total_registros_planilha), total_datasets)
+    for indice_array_indice, array_indice in enumerate(lista_arrays_indices):
+        dict_arrays_indices[
+            '_'.join((str(SEMENTE_PRIMARIA), nome_planilha, str(indice_array_indice), str(total_datasets)))
+        ] = array_indice
+print('ok')
+
+
+
+"""
+Fase de leitura dos datasets
 """
