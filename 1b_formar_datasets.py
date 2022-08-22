@@ -23,7 +23,7 @@ SEMENTE_PRIMARIA = 0
 total_registros = 0
 
 lista_2020_datasets_primarios = (
-    glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilha_2020??.csv'))
+    glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilhas', 'planilha_2020??.csv'))
 )
 quantidade_datasets_primarios = len(lista_2020_datasets_primarios)
 np.random.seed(SEMENTE_PRIMARIA)
@@ -47,7 +47,7 @@ dict_indices = defaultdict(list)
 dir_fracionados = os.path.join('databases', 'microeconometricas', 'banco_central', f'datasets_fracionados_{ano}')
 lpad = len(str(total_datasets))
 for indice_array in range(total_datasets):
-    indice_arquivo = str(indice_array).zfill(lpad)
+    indice_arquivo = str(indice_array + 1).zfill(lpad)
     with open(
             os.path.join(dir_fracionados, f'dataset_fracionado_{ano}_{indice_arquivo}.csv'), 'w') as dataset_fracionado:
         dataset_fracionado.write(f"{';'.join(lista_header)}\n")
