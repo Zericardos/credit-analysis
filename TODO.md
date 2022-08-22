@@ -25,6 +25,11 @@ escolheremos todas as observações.
         - cada mês de cada ano terá o mesmo número de observações, se possível. No exemplo acima, nos dois primeiros anos, cada mês contribuirá com 16 666 / 12 observações =~ 1 388
         - **Ponto de melhoria**: podemos permutar entre as quantidades diferentes entre os anos sempre que a divisão não for igual
       - O segundo macroconjunto será formado da mesma forma, porém escolhendo índices diferentes, mas randomicamente, dos que foram atribuídos no conjunto anterior
+## Tamanho máximo dos datasets
+&#x2612;  Criar um algoritmo para estabelecer um tamanho máximo para que o sistema não quebre ao rodar as modelagens
+  - deve ser estabelecido somente quando todos os scripts de modelagens estiverem completos, pois será necessário submeter os datasets em todos eles
+  - sempre deixar uma folga segura na memória para operar
+  - será necessário o uso de ferramentas de monitoramento de memória disponível
 ### Leitura dos Datasets
 - Cada conjunto de observações usará o dicionário do passo anterior
 ## Separação por regiões
@@ -43,7 +48,7 @@ regiões e tempos, quando possíveis.
 # Regress�o log�stica
 - Tratamento pr�vio
   - Trocar as v�rgulas por pontos como separador decimal
-  - Normalizar as vari�veis, opç�es  no site [Normalizers](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing)
+  - Normalizar as vari�veis, opç�es no site [Normalizers](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing)
     - RobustScaler
     - StandardScaler
 - Avaliar o uso dos par�metros

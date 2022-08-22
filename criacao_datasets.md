@@ -24,4 +24,6 @@
   - Total de registros por dataset, chave primária e secundária
   - três números são suficientes para gerar permutação sem reposição nos datasets trabalhados
 # Estrutura de Datasets Fracionados
--   Nome: ANO_[Chave PRIMÁRIA]_[ÍNDICE INICIAL]_[TOTAL DATASETS]
+-  Localização
+  - Diretório: **Ao lado do diretório dos datasets que foram criados**
+    - Exemplo: Datasets originais localizados no diretório **datasets_originais**, então o diretório **datasets_fracionados** deve estar ao lado do diretório **datasets_originais**

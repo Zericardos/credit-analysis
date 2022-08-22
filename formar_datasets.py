@@ -1,6 +1,8 @@
 import os
+from collections import defaultdict
 
 import numpy as np
+import pandas as pd
 from memory_profiler import profile
 from glob import glob
 
@@ -20,7 +22,9 @@ ano = 2020
 SEMENTE_PRIMARIA = 0
 total_registros = 0
 
-lista_2020_datasets_primarios = (glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilha_2020??.csv')))
+lista_2020_datasets_primarios = (
+    glob(os.path.join('databases', 'microeconometricas', 'banco_central', 'planilha_2020??.csv'))
+)
 quantidade_datasets_primarios = len(lista_2020_datasets_primarios)
 np.random.seed(SEMENTE_PRIMARIA)
 array_sementes_secundarias = np.random.randint(0, 256, size=quantidade_datasets_primarios, dtype=np.uint8)
@@ -32,18 +36,23 @@ for planilha in lista_2020_datasets_primarios:
 total_datasets = int(total_registros // TAMANHO_MAXIMO_DATAFRAME)
 
 dict_arrays_indices = {}
+lista_header = pd.read_csv(lista_2020_datasets_primarios[0], delimiter=';').columns
 for (nome_planilha, total_registros_planilha), semente_secundaria in zip(
         dict_arquivo_registros.items(), array_sementes_secundarias):
     np.random.seed(semente_secundaria)
-    lista_arrays_indices = np.array_split(np.random.permutation(total_registros_planilha), total_datasets)
-    for indice_array_indice, array_indice in enumerate(lista_arrays_indices):
-        dict_arrays_indices[
-            '_'.join((str(SEMENTE_PRIMARIA), nome_planilha, str(indice_array_indice), str(total_datasets)))
-        ] = array_indice
+    dict_arrays_indices[nome_planilha] = np.array_split(
+        np.random.permutation(total_registros_planilha).astype(np.uint32) + 1, total_datasets)
+dict_indices = defaultdict(list)
+dir_fracionados = os.path.join('databases', 'microeconometricas', 'banco_central', 'datasets_fracionados_2020')
+lpad = len(str(total_datasets))
+for indice_array in range(total_datasets):
+    indice_arquivo = str(indice_array).zfill(lpad)
+    with open(os.path.join(dir_fracionados, f'dataset_fracionado_{ano}_{indice_arquivo}.csv'), 'w') as dataset_fracionado:
+        for indice_dataset, arquivo_primario in enumerate(lista_2020_datasets_primarios):
+            with open(arquivo_primario) as dataset_primario:
+                next(dataset_primario)
+                lista_indices_dataset_primario = list(dict_arrays_indices.values())[indice_dataset][indice_array].tolist()
+                for indice_registro, registro in enumerate(dataset_primario, 1):
+                    if indice_registro in lista_indices_dataset_primario:
+                        dataset_fracionado.write(registro)
 print('ok')
-
-
-
-"""
-Fase de leitura dos datasets
-"""
