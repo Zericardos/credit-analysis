@@ -4,9 +4,10 @@
 venv:
 	# virtualenv -p /usr/local/bin/python3.10 .venv
 	conda install -v python=3.10.4 -y
-	conda create -n env_python3_10 --prefix $(pwd)/.venv python=3.10.4 -y
-	conda activate env_python3_10
-	conda install -v pandas=1.4.3 jupyterlab notebook -y
+	conda create --prefix $(pwd)/.venv python=3.10.4 -y
+	conda activate $(pwd)/.venv
+	conda install -v numpy=1.23.0 -y
+	conda install -v pandas=1.4.4 jupyterlab notebook -y
 
 init:
 	pip install -r configs/requirements.txt

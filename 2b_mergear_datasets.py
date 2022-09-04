@@ -20,7 +20,7 @@ def estimar_valores(df: DataFrame) -> DataFrame:
         return df.interpolate().interpolate(method='pad')
 
 
-def formatar_macro(arquivo_csv: str, periodo: int) -> DataFrame:
+def _formatar_macro(arquivo_csv: str, periodo: int) -> DataFrame:
     df = pd.read_csv(arquivo_csv, delimiter=';')
     df.drop(df[df['YEAR'] != periodo].index, inplace=True)
     df.drop('RAW DATE', axis=1, inplace=True)
@@ -59,9 +59,9 @@ def filtrar_macros(lista_arquivos_csv: List[str]) -> List[str]:
 @formatar_periodo
 def _criar_df_macro_periodo(dir_macro, periodo: Union[str, int]):
     lista_arquivos_csv = filtrar_macros(glob(os.path.join(dir_macro, 'time_series_ipeadata_*.csv')))
-    df_macro_periodo = formatar_macro(lista_arquivos_csv[0], periodo)
+    df_macro_periodo = _formatar_macro(lista_arquivos_csv[0], periodo)
     for arquivo_csv in lista_arquivos_csv[1:]:
-        df = formatar_macro(arquivo_csv, periodo)
+        df = _formatar_macro(arquivo_csv, periodo)
         df_macro_periodo = pd.merge(left=df_macro_periodo, right=df,
                                     left_on=lista_colunas_base, right_on=lista_colunas_base)
     return df_macro_periodo

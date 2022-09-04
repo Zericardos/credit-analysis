@@ -20,11 +20,10 @@ def reduzir_tamanho_dataframe(dataframe):
     reduzir_tamanho(dataframe, ('float64', 'float32'))
 
 
-
 reduzir_tamanho_dataframe(x_puro)
 x_dumizado = pd.get_dummies(x_puro, drop_first=True)
 del x_puro
 y = pd.read_csv('y_puro.csv', delimiter=';', nrows=N_LINHAS)
 modelo_logistico_binario = LogisticRegression(solver='saga')  # testar com sag
-modelo_logistico_binario.fit(x_dumizado, y)
+modelo_logistico_binario.fit(x_dumizado, y.values.ravel())
 print('ok')
