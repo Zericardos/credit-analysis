@@ -41,14 +41,12 @@ def converter_separador_decimal(dataframe, coluna: str):
 
 def dummizar_y(dataframe, coluna):
     converter_separador_decimal(dataframe, coluna)
-    # dataframe[coluna] = dataframe[coluna].str.replace(',', '.').astype(float)  # pd.to_numeric(dataframe[coluna])
     nova_coluna = f'{coluna}_dummizado'
     if len(dataframe[coluna].unique()) > 2:
-        dataframe[nova_coluna] = dataframe[coluna]
-        dataframe[nova_coluna][dataframe[nova_coluna] > 0] = 1
-        dataframe[nova_coluna][dataframe[nova_coluna] == 0] = 0
-        dataframe.drop(coluna, axis=1, inplace=True)
-    return pd.get_dummies(dataframe, columns=[nova_coluna], drop_first=True)[f'{nova_coluna}_1.0']
+        dataframe.loc[dataframe[coluna] > 0, coluna] = 'Inadimplente'
+        dataframe.loc[dataframe[coluna] == 0, coluna]= 'Adimplente'
+        dataframe.rename(columns={coluna: f'{coluna}_refatorada'}, inplace=True)
+    return dataframe
 
 
 def preparar_variaveis(dataframe):
@@ -96,8 +94,11 @@ def _realizar_regressao_logistica(df_x):
 
 
 if __name__ == '__main__':
-    x = pd.read_csv('x_teste.csv', delimiter=';')
-    _realizar_regressao_logistica(x)
+    df = pd.read_csv('databases/mergeados_periodo_ano_5000/dataset_fracionado_2020_0001.csv_completa', delimiter =';')
+    df_valores_diferentes = _descartar_colunas_valores_repetidos(df)
+    df_valores_diferentes = _converter_tipagem_colunas(df_valores_diferentes)
+    df_valores_diferentes = dummizar_y(df_valores_diferentes, 'vencido_acima_de_15_dias')
+    df_valores_diferentes.to_csv('df_teste_5000.csv', sep=';', index=False)
 
 
 print('trap')

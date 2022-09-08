@@ -81,15 +81,17 @@ def _criar_arquivos_csv_mergeados(df_macro: DataFrame, dir_micro: str, dir_saida
         df = pd.read_csv(arquivo_csv, delimiter=';')
         df = _formatar_data_df(df)
         df = pd.merge(left=df_macro, right=df, left_on=lista_colunas_base, right_on=lista_colunas_base)
-        df.to_csv(os.path.join(dir_saida, f'{os.path.basename(arquivo_csv)}_completa'), sep=';', index=False)
+        df.to_csv(os.path.join(dir_saida, f'{os.path.basename(arquivo_csv)}'), sep=';', index=False)
 
 
 if __name__ == '__main__':
     ano = 2020
+    TAMANHO_MAXIMO_DATAFRAME = 5000
     DIR_MACRO = os.path.join('databases', 'macroeconomicas', 'ipeadata', 'time_series')
     df_macroeconomico = _criar_df_macro_periodo(DIR_MACRO, ano)
-    DIR_MICRO = os.path.join('databases', 'microeconometricas', 'banco_central', f'datasets_fracionados_{ano}')
-    DIR_SAIDA = Path(os.path.join('databases', 'mergeados_periodo_ano'))
+    DIR_MICRO = os.path.join(
+        'databases', 'microeconometricas', 'banco_central', f'datasets_fracionados_{ano}_{TAMANHO_MAXIMO_DATAFRAME}')
+    DIR_SAIDA = Path(os.path.join('databases', f'mergeados_periodo_ano_{TAMANHO_MAXIMO_DATAFRAME}'))
     DIR_SAIDA.mkdir(exist_ok=True)
     _criar_arquivos_csv_mergeados(df_macroeconomico, DIR_MICRO, DIR_SAIDA)
     print('feito')

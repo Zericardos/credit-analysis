@@ -17,7 +17,7 @@ def nomear_arquivo(arquivo: str) -> str:
     return os.path.basename(arquivo)
 
 
-TAMANHO_MAXIMO_DATAFRAME = 50000
+TAMANHO_MAXIMO_DATAFRAME = 5000
 
 ano = 2020
 SEMENTE_PRIMARIA = 0
@@ -45,7 +45,8 @@ for (nome_planilha, total_registros_planilha), semente_secundaria in zip(
         np.random.permutation(total_registros_planilha).astype(np.uint32) + 1, total_datasets)
 ano = 2020
 dict_indices = defaultdict(list)
-dir_fracionados = os.path.join('databases', 'microeconometricas', 'banco_central', f'datasets_fracionados_{ano}')
+dir_fracionados = os.path.join(
+    'databases', 'microeconometricas', 'banco_central', f'datasets_fracionados_{ano}_{TAMANHO_MAXIMO_DATAFRAME}')
 Path(dir_fracionados).mkdir(exist_ok=True)
 lpad = len(str(total_datasets))
 for indice_array in range(total_datasets):
