@@ -2,15 +2,14 @@
 .DEFAULT_GOAL: test
 
 venv:
-	# virtualenv -p /usr/local/bin/python3.10 .venv
 	conda install -v python=3.10.4 -y
 	conda create --prefix $(pwd)/.venv python=3.10.4 -y
 	conda activate $(pwd)/.venv
 	conda install -v numpy=1.23.0 -y
-	conda install -v pandas=1.4.4 jupyterlab notebook -y
+	conda install -v pandas=1.5.0 jupyterlab notebook -y
 
 init:
-	pip install -r configs/requirements.txt
+	pip install -r requirements.txt
 
 update:
 	conda env update --prefix ./env --file configs/environment.yml  --prune

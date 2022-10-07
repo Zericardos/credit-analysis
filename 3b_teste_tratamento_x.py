@@ -101,4 +101,3 @@ if __name__ == '__main__':
     df_valores_diferentes.to_csv('df_teste_5000.csv', sep=';', index=False)
 
 
-print('trap')

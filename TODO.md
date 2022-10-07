@@ -45,7 +45,7 @@ regiões e tempos, quando possíveis.
   - para isso pode-se fazer novos testes
   - usar uma data pequena primeiro
     - para valores faltantes, proceder com uma estimativa
-# Regress�o log�stica
+# Regressão logística
 - Tratamento pr�vio
   - Trocar as v�rgulas por pontos como separador decimal
   - Normalizar as vari�veis, opç�es no site [Normalizers](https://scikit-learn.org/stable/modules/classes.html#module-sklearn.preprocessing)
@@ -57,3 +57,8 @@ regiões e tempos, quando possíveis.
     - l2
     - elasticnet
     - none
+# Domingo
+- Graus de liberdade n - k
+  - n: Número de observações
+  - k número de parâmetros
+- 
