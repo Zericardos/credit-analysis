@@ -50,7 +50,7 @@ def dummizar_y(dataframe, coluna):
 
 
 def preparar_variaveis(dataframe):
-    """TODO: fazer loop com as observações, selecionando múltiplos conjuntos e sempre presenvando a ordem
+    """TODO: fazer loop com as observações, selecionando múltiplos conjuntos e sempre preservando a ordem
     - para cada subconjunto de observações, dummizar e apagar as colunas originais
     - juntar todo o dataframe modificado
         -- se não for possível juntar todo dataframe modificado, criar um mapa de índices e promover o fatiamento
