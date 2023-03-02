@@ -30,9 +30,7 @@ table(df$inadimplido_acima_90_dias_dummizado)
 #Checar categorias das variáveis
 
 str(df)
-
-df <- as.data.frame(unclass(df), stringAsFactors=TRUE)
-
+df <- as.data.frame(unclass(df), stringsAsFactors = TRUE)
 str(df)
 # TODO: - Tentar identificar outliers 
 #       - Criar uma variável de diferencial do PIB, pois só o PIB não é tão vantajoso como o seu crescimento ou queda 
@@ -57,15 +55,19 @@ summary(modelo_atrasos_0_dias)
 summary(modelo_atrasos_90_dias)
 logLik(modelo_atrasos_0_dias)
 logLik(modelo_atrasos_90_dias)
+predict(object=modelo_atrasos_0_dias,
+        data.frame(
+          cnae_cecao="PJ - Atividades administrativas e serviços complementares",
+          indexador="Pós-fixado",
+          modalidade="PJ - Capital de giro rotativo",
+          porte="PJ - Médio                                   ",
+          ocupacao="PF - Empregado de empresa privada",
+          uf="SP",
+          TAXAS_DESEMPREGO=4.4,
+          IPCA_TAXA_VARIACAO=0.64,
+          IPCA_INDICE_GERAL=5348.49,
+          INDICE_CONDICOES_ECONOMICAS_ATUAIS=95.71
+          )
+        )
 
-# Capturando as médias das variáveis utilizadas nos modelos
-mean(df$INDICE_CONDICOES_ECONOMICAS_ATUAIS)
-library(gridExtra)
-hist(
-     x=df$INDICE_CONDICOES_ECONOMICAS_ATUAIS,
-     main="INDICE_CONDICOES_ECONOMICAS_ATUAIS",
-     xlab="Valor",
-     ylab="Observações"
-)
-barplot(table(df$uf))
-# realizar pelo menos uma predição para cada modelo
+
