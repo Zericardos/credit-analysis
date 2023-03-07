@@ -75,5 +75,210 @@ predict(object=modelo_atrasos_90_dias,
         df_predict,
         type = "response"
 )
+# Construção de uma matriz de confusão
+df$phat_0 <- modelo_atrasos_0_dias$fitted.values
+df$phat_90 <- modelo_atrasos_90_dias$fitted.values
+
+# Visualizando a base de dados com a variável 'phat_#dias'
+df %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = "striped",
+                full_width = F,
+                font_size = 22)
+
+# Matriz de confusão para cutoff = 0.5 (função confusionMatrix do pacote caret)
+cutoff <- 0.5
+confusionMatrix(table(predict(modelo_atrasos_0_dias, type="response") >= cutoff,
+                      df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])
+
+confusionMatrix(table(predict(modelo_atrasos_90_dias, type="response") >= cutoff,
+                      df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])
+
+# Visualizando os principais indicadores desta matriz de confusão
+data.frame(Sensitividade = confusionMatrix(table(predict(modelo_atrasos_0_dias,
+                                                         type = "response") >= 0.5,
+                                                 df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])[["byClass"]][["Sensitivity"]],
+           Especificidade = confusionMatrix(table(predict(modelo_atrasos_0_dias,
+                                                          type = "response") >= 0.5,
+                                                  df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])[["byClass"]][["Specificity"]],
+           Acurácia = confusionMatrix(table(predict(modelo_atrasos_0_dias,
+                                                    type = "response") >= 0.5,
+                                            df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])[["overall"]][["Accuracy"]]) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped", position = "center",
+                full_width = F, 
+                font_size = 27)
+
+data.frame(Sensitividade = confusionMatrix(table(predict(modelo_atrasos_90_dias,
+                                                         type = "response") >= 0.5,
+                                                 df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])[["byClass"]][["Sensitivity"]],
+           Especificidade = confusionMatrix(table(predict(modelo_atrasos_90_dias,
+                                                          type = "response") >= 0.5,
+                                                  df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])[["byClass"]][["Specificity"]],
+           Acurácia = confusionMatrix(table(predict(modelo_atrasos_90_dias,
+                                                    type = "response") >= 0.5,
+                                            df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])[["overall"]][["Accuracy"]]) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped", position = "center",
+                full_width = F, 
+                font_size = 27)
+
+#Matriz de confusão para cutoff = 0.3
+cutoff_03 <- 0.3
+confusionMatrix(table(predict(modelo_atrasos_0_dias, type = "response") >= cutoff_03,
+                      df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])
+confusionMatrix(table(predict(modelo_atrasos_90_dias, type = "response") >= cutoff_03,
+                      df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])
 
 
+cutoff_07 <- 0.7
+#Matriz de confusão para cutoff = 0.7
+confusionMatrix(table(predict(modelo_atrasos_0_dias, type = "response") >= cutoff_07,
+                      df$inadimplido_acima_0_dias_dummizado == 1)[2:1, 2:1])
+confusionMatrix(table(predict(modelo_atrasos_90_dias, type = "response") >= cutoff_07,
+                      df$inadimplido_acima_90_dias_dummizado == 1)[2:1, 2:1])
+
+predicoes_0 <- prediction(predictions = modelo_atrasos_0_dias$fitted.values, 
+                        labels = df$inadimplido_acima_0_dias_dummizado) 
+#a função prediction, do pacote ROCR, cria um objeto com os dados necessários
+#para a futura plotagem da curva ROC.
+
+#função performance do pacote ROCR
+dados_curva_roc_0 <- performance(predicoes_0, measure = "sens") 
+#A função peformance(), do pacote ROCR, extrai do objeto 'predicoes' os 
+#dados de sensitividade e de especificidade para a plotagem.
+
+#Desejamos os dados da sensitividade e de especificidade. Então, devemos
+#digitar os seguintes códigos::
+
+sensitividade_0 <- (performance(predicoes_0, measure = "sens"))@y.values[[1]] 
+
+especificidade_0 <- (performance(predicoes_0, measure = "spec"))@y.values[[1]]
+
+#Extraindo os cutoffs:
+cutoffs_0 <- dados_curva_roc_0@x.values[[1]] 
+
+#Até o momento, foram extraídos 3 vetores: 'sensitividade', 'especificidade' 
+#e 'cutoffs'. Poder-se-ia plotar normalmente a partir daqui com a linguagem 
+#base do R, mas demos preferência à ferramenta ggplot2. Assim, criamos um data 
+#frame que contém os vetores mencionados.
+
+dados_plotagem_0 <- cbind.data.frame(cutoffs_0, especificidade_0, sensitividade_0)
+
+#Visualizando o novo data frame dados_plotagem
+dados_plotagem_0 %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped", 
+                full_width = F, 
+                font_size = 22)
+
+#Plotando:
+ggplotly(dados_plotagem_0 %>%
+           ggplot(aes(x = cutoffs_0, y = especificidade_0)) +
+           geom_line(aes(color = "Especificidade"),
+                     size = 1) +
+           geom_point(color = "#95D840FF",
+                      size = 1.9) +
+           geom_line(aes(x = cutoffs_0, y = sensitividade_0, color = "Sensitividade"),
+                     size = 1) +
+           geom_point(aes(x = cutoffs_0, y = sensitividade_0),
+                      color = "#440154FF",
+                      size = 1.9) +
+           labs(x = "Cutoff",
+                y = "Sensitividade/Especificidade") +
+           scale_color_manual("Legenda:",
+                              values = c("#95D840FF", "#440154FF")) +
+           theme_bw())
+
+##############################################################################
+#                       EXEMPLO 01 - CONSTRUÇÃO DA CURVA ROC                 #
+##############################################################################
+#função roc do pacote pROC
+ROC_0 <- roc(response = df$inadimplido_acima_0_dias_dummizado, 
+           predictor = modelo_atrasos_0_dias$fitted.values)
+
+ggplotly(
+  ggroc(ROC_0, color = "#440154FF", size = 1) +
+    geom_segment(aes(x = 1, xend = 0, y = 0, yend = 1),
+                 color="grey40",
+                 size = 0.2) +
+    labs(x = "Especificidade",
+         y = "Sensitividade",
+         title = paste("Área abaixo da curva:",
+                       round(ROC_0$auc, 3),
+                       "|",
+                       "Coeficiente de Gini",
+                       round((ROC_0$auc[1] - 0.5) / 0.5, 3))) +
+    theme_bw()
+)
+
+predicoes_90 <- prediction(predictions = modelo_atrasos_90_dias$fitted.values, 
+                          labels = df$inadimplido_acima_90_dias_dummizado) 
+#a função prediction, do pacote ROCR, cria um objeto com os dados necessários
+#para a futura plotagem da curva ROC.
+
+#função performance do pacote ROCR
+dados_curva_roc_90 <- performance(predicoes_90, measure = "sens") 
+#A função peformance(), do pacote ROCR, extrai do objeto 'predicoes' os 
+#dados de sensitividade e de especificidade para a plotagem.
+
+#Desejamos os dados da sensitividade e de especificidade. Então, devemos
+#digitar os seguintes códigos::
+
+sensitividade_90 <- (performance(predicoes_90, measure = "sens"))@y.values[[1]] 
+
+especificidade_90 <- (performance(predicoes_90, measure = "spec"))@y.values[[1]]
+
+#Extraindo os cutoffs:
+cutoffs_90 <- dados_curva_roc_90@x.values[[1]] 
+
+#Até o momento, foram extraídos 3 vetores: 'sensitividade', 'especificidade' 
+#e 'cutoffs'. Poder-se-ia plotar normalmente a partir daqui com a linguagem 
+#base do R, mas demos preferência à ferramenta ggplot2. Assim, criamos um data 
+#frame que contém os vetores mencionados.
+
+dados_plotagem_90 <- cbind.data.frame(cutoffs_90, especificidade_90, sensitividade_90)
+
+#Visualizando o novo data frame dados_plotagem
+dados_plotagem_90 %>%
+  kable() %>%
+  kable_styling(bootstrap_options = "striped", 
+                full_width = F, 
+                font_size = 22)
+
+#Plotando:
+ggplotly(dados_plotagem_90 %>%
+           ggplot(aes(x = cutoffs_90, y = especificidade_90)) +
+           geom_line(aes(color = "Especificidade"),
+                     size = 1) +
+           geom_point(color = "#95D840FF",
+                      size = 1.9) +
+           geom_line(aes(x = cutoffs_90, y = sensitividade_90, color = "Sensitividade"),
+                     size = 1) +
+           geom_point(aes(x = cutoffs_90, y = sensitividade_90),
+                      color = "#440154FF",
+                      size = 1.9) +
+           labs(x = "Cutoff",
+                y = "Sensitividade/Especificidade") +
+           scale_color_manual("Legenda:",
+                              values = c("#95D840FF", "#440154FF")) +
+           theme_bw())
+
+#função roc do pacote pROC
+ROC_90 <- roc(response = df$inadimplido_acima_90_dias_dummizado, 
+             predictor = modelo_atrasos_90_dias$fitted.values)
+
+ggplotly(
+  ggroc(ROC_90, color = "#440154FF", size = 1) +
+    geom_segment(aes(x = 1, xend = 0, y = 0, yend = 1),
+                 color="grey40",
+                 size = 0.2) +
+    labs(x = "Especificidade",
+         y = "Sensitividade",
+         title = paste("Área abaixo da curva:",
+                       round(ROC_90$auc, 3),
+                       "|",
+                       "Coeficiente de Gini",
+                       round((ROC_90$auc[1] - 0.5) / 0.5, 3))) +
+    theme_bw()
+)
