@@ -1,5 +1,6 @@
 *-checkpoint
 .ipynb_checkpoints/
+.vscode/
 .venv/
 .spyproject
 databases/microeconometricas/banco_central/
@@ -9,3 +10,5 @@ logs/
 .Rhistory
 .RData
 .Ruserdata
+rascunho/*
+!rascunho/.gitkeep

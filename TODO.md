@@ -56,9 +56,31 @@ Exemplo:
     - elasticnet
     - none
 ### Multinível
-- separar por estados
-- tipo de cliente PF ou PJ
-- nível de 
+Separar por:
+1. estados
+2. tipo de cliente PF ou PJ 
+3. executar análise de cluster
+4. modalidade e indexador (propostos no esquema stepwise)
+#### Comparar as acurácias em cada grupo
+- testar com pelo menos 3 datasets diferentes
+  - análise de cluster deve ser rodada para cada um deles também, pois são contextos diferentes
+#### Gráficos
+- Pirâmide
+  - No gráfico de pirâmide total, em que não há separação por estado, adicionar a medida percentual de inadimplentes frente ao total
+    - trecho
+```
+df_counts <- df %>%
+group_by(inadimplido_acima_90_dias_factor) %>%
+  summarize(n = n())
+
+ggplot(df_counts,
+       aes(x = inadimplido_acima_90_dias_factor,
+           y = n,
+           fill = inadimplido_acima_90_dias_factor)) +
+  geom_col() 
+```
+#### Distribuições
+Identificar como as variáveis de nível 2/3 são distribuídas e se deve-se aplicar diferente tratamento, caso a distribuição seja diferente
 # Tarefas
 1. Montagem de DataFrame menor possível e para rodar o modelo
   - deixá-lo com as variáveis que só vai usar de certeza e com o tempo adicionar as outras que poderão ser relevantes
