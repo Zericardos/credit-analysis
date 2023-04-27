@@ -21,7 +21,7 @@ if(sum(as.numeric(!pacotes %in% installed.packages())) != 0){
 #                  CARREGAMENTO DA BASE DE DADOS base_turismo                #
 ##############################################################################
 #Carregamento da base de dados
-load("multinivel/base_turismo.RData")
+load("modelos/multinivel/base_turismo.RData")
 
 #Visualizando a base de dados
 base_turismo %>% 

@@ -3,7 +3,7 @@
 ################################################################################
 #Pacotes utilizados
 pacotes <- c("plotly","tidyverse","reshape2","knitr","kableExtra","rgl","car",
-             "nlme","lmtest","fastDummies","msm","lmeInfo","jtools","glmmTMB")
+             "nlme","lmtest","fastDummies","msm","lmeInfo","jtools","glmmTMB", "caret")
 
 if(sum(as.numeric(!pacotes %in% installed.packages())) != 0){
   instalador <- pacotes[!pacotes %in% installed.packages()]
